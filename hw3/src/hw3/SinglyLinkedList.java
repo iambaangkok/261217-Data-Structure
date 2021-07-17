@@ -1,3 +1,5 @@
+package hw3;
+
 public class SinglyLinkedList {
     Node head;
     String listName;

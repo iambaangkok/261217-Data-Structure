@@ -1,3 +1,5 @@
+package hw3;
+
 public class DoublyLinkedList {
     Node head;
     Node tail;
@@ -6,7 +8,7 @@ public class DoublyLinkedList {
     public DoublyLinkedList(String name){
         // freshly created list have no element -> no head and tail
         head = null;
-        tail = null;
+        tail = null;    
         listName = name;
     }
     
@@ -23,7 +25,6 @@ public class DoublyLinkedList {
                 tail = tail.previous;
                 tail.next = null;
             }
-            
         }
     }
     
