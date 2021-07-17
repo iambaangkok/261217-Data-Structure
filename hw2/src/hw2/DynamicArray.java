@@ -1,3 +1,5 @@
+package hw2;
+
 public class DynamicArray {
     private int[] arr;
     private int capacity;
