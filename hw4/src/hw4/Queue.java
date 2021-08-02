@@ -2,8 +2,9 @@ package hw4;
 
 public class Queue implements List{
     // Implement Queue using Linked List with tail
-    Node head;
-    Node tail;
+    
+    Node head;// pop here
+    Node tail;// push here
     
     public void push(Node node){
         if (head == null){
@@ -11,35 +12,23 @@ public class Queue implements List{
             head = node;
             tail = node;
         }else{
-            // set node as head with a bit of rewiring, dont mess with tail
-            node.next = head;
-            head = node;
+            // set node as next of tail then set tail to be node
+            tail.next = node;
+            tail = node;
         }
     }
     
-    public void pop(){ // pop back
-        if (head != null){
-            if (head != tail){
-                // loop to the node before tail
-                Node currNode = head;
-                while(currNode.next != tail){
-                    currNode = currNode.next;
-                }
-                // then set tail to that node instead (dereference tail)
-                tail = currNode;
-            }else{
-                // dereference both head and tail
-                head = null;
-                tail = null;
-            }
+    public void pop(){ // pop back 
+        if (head != null){ //dereferece head
+            head = head.next;
         }else{
             System.out.println("Error: Queue Underflow");
         }
     }
     
     public Node top(){
-        if(tail != null){
-            return tail;
+        if(head != null){
+            return head;
         }
         return null;
     }
