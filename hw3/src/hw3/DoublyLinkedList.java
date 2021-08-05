@@ -144,14 +144,11 @@ public class DoublyLinkedList {
         return new Node("Student Not Found!");
     }
 
-    public boolean isEqualNode(Node a, Node b){ // check if 2 nodes is equal in terms of data (student_id, name, gpa)
-        return (a.student_id == b.student_id && a.name == b.name && a.gpa == b.gpa);
-    }
     
     public void addNodeAfter(Node node1, Node node2){
         Node currNode = head;
         while(currNode != null){ // iterate through the list to find the targetNode(node1)
-            if(isEqualNode(currNode,node1)){
+            if(node1.student_id == currNode.student_id){
                 break;
             }else{
                 currNode = currNode.next;
@@ -178,7 +175,7 @@ public class DoublyLinkedList {
     public void addNodeBefore(Node node1, Node node2){
         Node currNode = head;
         while(currNode != null){ // iterate through the list to find the targetNode(node1)
-            if(isEqualNode(currNode,node1)){
+            if(node1.student_id == currNode.student_id){
                 break;
             }else{
                 currNode = currNode.next;

@@ -137,40 +137,35 @@ public class SinglyLinkedList {
         return new Node("Student Not Found!");
     }
     
-    public boolean isEqualNode(Node a, Node b){ // check if 2 nodes is equal in terms of data (student_id, name, gpa)
-        return (a.student_id == b.student_id && a.name == b.name && a.gpa == b.gpa);
-    }
+   
     public void addNodeAfter(Node node1, Node node2){
+        // must gurantee that node1 exists in this list
+        // node2.next = node1.next;
+        // node1.next = node2;
+
+        //for more varied circumstances
         Node currNode = head;
-        while(currNode != null){ // iterate through the list to find the targetNode(node1)
-            if(isEqualNode(currNode,node1)){
-                break;
-            }else{
-                currNode = currNode.next;
-            }
+        while((node1.student_id != currNode.student_id) && currNode != null){ // iterate through the list to find the targetNode(node1)    
+            currNode = currNode.next;
         }
         if(currNode == null){ // node1 not found
             System.out.println("ERROR");
             return;
         }
-        // add node2 to the list   [targetNode]<->[node2]<->[nextNode]
-        Node nextNode = currNode.next;
+        node2.next = currNode.next;        
         currNode.next = node2;
-        node2.next = nextNode;
+        // add node2 to the list   [targetNode]<->[node2]<->[nextNode]
+        
     }
     
     public void addNodeBefore(Node node1, Node node2){
-        if(isEqualNode(node1, head)){ // add before head == pushFront
+        if(node1.student_id == head.student_id){ // add before head == pushFront
             pushFront(node2);
             return;
         }
         Node currNode = head;
-        while(currNode.next != null){ // iterate through the list to find the node BEFORE targetNode(node1)
-            if(isEqualNode(currNode.next,node1)){
-                break;
-            }else{
-                currNode = currNode.next;
-            }
+        while((node1.student_id != currNode.next.student_id) && currNode.next != null){ // iterate through the list to find the node BEFORE targetNode(node1)
+            currNode = currNode.next;
         }
         if(currNode.next == null){ // node1 not found
             System.out.println("ERROR");
@@ -199,11 +194,11 @@ public class SinglyLinkedList {
     }
     
     public void printStructure(){
-        Node current=head;
+        Node current = head;
         System.out.print(listName + ": head -> ");
         while(current!=null){
             System.out.print("{" + current.student_id + "} -> ");
-            current = current.next;
+            current = current.next; // i++
         }
         System.out.println("null");
     }
