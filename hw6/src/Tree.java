@@ -1,6 +1,6 @@
 
 // This Tree needs to inherit BTreePrinter
-public class Tree extends BTreePrinter{ // Fix this
+public class Tree extends BTreePrinter{
     Node root;
       
     public Tree(Node root){
@@ -56,7 +56,7 @@ public class Tree extends BTreePrinter{ // Fix this
         if(node.left == null){ // node.left = null means current node is the left-most node -> min node
             return node;
         }else{
-            return findMin(node.left); // otherwise go evenmore left;
+            return findMin(node.left); // otherwise go evenmore left
         }
     }
     
@@ -71,7 +71,7 @@ public class Tree extends BTreePrinter{ // Fix this
         if(node.right == null){ // node.right = null means current node is the right-most node -> max node
             return node;
         }else{
-            return findMax(node.right); // otherwise go evenmore right;
+            return findMax(node.right); // otherwise go evenmore right
         }
     }
     
@@ -145,7 +145,9 @@ public class Tree extends BTreePrinter{ // Fix this
             return;
         }
         // insert
-        if(key < closest.key){
+        if(key == closest.key){ // don't insert
+            return;
+        }else if(key < closest.key){
             closest.left = newNode;
         }else{
             closest.right = newNode;
@@ -299,25 +301,58 @@ public class Tree extends BTreePrinter{ // Fix this
     }
     
     public static Node findNext(Node node){
-        //this function should call other functions
-        return null;
+        if(node==null){ // this shouldn't happen
+            return null;
+        }
+
+        if(node.right != null){ // return left most node of right subtree
+            return leftDescendant(node.right);
+        }else{
+            return rightAncestor(node);
+        }
     }
     
     public static Node leftDescendant(Node node){// Case 1 (findMin)
-        // this function should be recursive
-        return null;
+        // this function should be recursive : we could just call findMin(node); but i guess we'll have to write excess code
+
+        if(node == null){ // shouldn't happen unless root is null
+            return null; 
+        }
+        if(node.left == null){ // node.left = null means current node is the left-most node
+            return node;
+        }else{
+            return leftDescendant(node.left); // otherwise go evenmore left
+        }
+
     }
     
     public static Node rightAncestor(Node node) {// Case 1 (first right parent)
         // this function should be recursive
-        return null;
-    }
+
+        if(node == null){ // shouldn't happen unless root is null
+            return null; 
+        }
+        if(node.parent == null){ // node.parent = null means current node is the most 'parent' node
+            return node;
+        }else if(node.key < node.parent.key){ // found the first parent that is more than inself
+            return node.parent;
+        }else{
+            return rightAncestor(node.right); // otherwise go evenmore up
+        }
+    }   
     
     public List rangeSearch(int x, int y){
-        // This function utilizes findCloest() and findNext()
-        // Use List list append(node) to add node to the list
-        // List is the static Array
-        return new List(100);
+        // This function utilizes findClosest() and findNext()
+        List list = new List(100);
+        
+        Node current = findClosest(x); // first element that's in-range
+        while(current != null && current.key <= y){ // loop findNext(node) until out of range
+            if(current.key >= x)
+                list.append(current);
+            current = findNext(current);
+        }
+        
+        return list;
     }
     
          
@@ -326,10 +361,62 @@ public class Tree extends BTreePrinter{ // Fix this
     public void delete(int key) {
         // There should be 6 cases here
         // Non-root nodes should be forwarded to the static function
+        Node findResult = find(key);
+        
+        if(root == null){ // nothing to delete -> error
+            System.out.println("Empty Tree!!!");
+        }else if(findResult == null){ // C5 key not found
+            System.out.println("Key not found!!!");
+        }else if(findResult == root){
+            if(root.left == null && root.right == null){ // C1 root have no child -> just delete root
+                root = null;
+            }else if(root.right == null && root.left != null){ // C2 only left child -> promote left child
+                root.left.parent = null;
+                root = root.left;
+            }else if(root.left == null && root.right != null){ // C3 only right child -> promote right child
+                root.right.parent = null;
+                root = root.right;
+            }else if(root.left != null && root.right != null){ // C4 have both l r child -> promote min node of right subtree
+                Node minRNode = findMin(root.right);
+                root.key = minRNode.key; // just copy key, no need to re-wire
+                delete(minRNode);
+            }
+        }else{ // C6 Otherwise delete non-root node
+            delete(findResult);
+        }
+        return;
     }
 
     // Use this function to delete non-root nodes
     public static void delete(Node node){
         // There should be 7 cases here
+        if(node.left == null && node.right == null && node.parent != null){ //C1,2 leaf node -> just delete it
+            if(node.parent.left == node){ // C1 
+                node.parent.left = null; 
+            }else if(node.parent.right == node){ // C2
+                node.parent.right = null; 
+            }
+        }else if(node.left != null && node.right == null && node.parent != null){ // C3,4 node with single left child -> promote left child
+            if(node.parent.left == node){ // C3
+                node.parent.left = node.left;
+                node.left.parent = node.parent;
+            }else if(node.parent.right == node){ // C4
+                node.parent.right = node.left;
+                node.left.parent = node.parent;
+            }
+        }else if(node.left == null && node.right != null && node.parent != null){ // C5,6 node with single right child -> promote right child
+            if(node.parent.left == node){ // C5
+                node.parent.left = node.right;
+                node.right.parent = node.parent;
+            }else if(node.parent.right == node){ // C6
+                node.parent.right = node.right;
+                node.right.parent = node.parent;
+            }
+        }else if(node.left != null && node.right != null){ // C7 have both l r child -> promote min node of right subtree
+            Node minRNode = findMin(node.right);
+            node.key = minRNode.key; // just copy key, no need to re-wire
+            delete(minRNode);
+        }
+        return;
     }
 }
