@@ -343,7 +343,7 @@ public class AVLTree extends BTreePrinter{
             //     System.out.println("At node " + currNode.key + " " + hleft + " " + hright);
             // }
             if (Math.abs(balanceFactor) > 1){  
-                rebalance(tree, currNode);
+                rebalance(tree, currNode); 
             }
             currNode = currNode.parent;
         }
@@ -445,17 +445,18 @@ public class AVLTree extends BTreePrinter{
     public static Node AVLTreeMergeWithRoot(Node r1, Node r2, Node t){
         //System.out.println(r1.key + " " + r2.key + " " + t.key + " " + height(r1) + " " + height(r2));
         if (isMergeable(r1, r2)) {
-            if(Math.abs(height(r1)-height(r2)) <= 1){
+            if(Math.abs(height(r1)-height(r2)) <= 1){ //balanced
                 //System.out.println("Just right");
                 //t = findMax(r1);
                 // tree.delete(t.key);
                 // t.parent = null;
                 mergeWithRoot(r1,r2,t);
                 return t;
-            }else if(height(r1) > height(r2)){
+            }else if(height(r1) > height(r2)){ // t1 heavier
                 //System.out.println("T1 heavier");
                 if(r1.right != null){
                     Node rPrime = AVLTreeMergeWithRoot(r1.right, r2, t);
+
                     AVLTree tree = new AVLTree();
                     r1.right = rPrime;
                     if(rPrime!= null){
@@ -468,7 +469,7 @@ public class AVLTree extends BTreePrinter{
                 }else{
                     return null;
                 }
-            }else if(height(r1) < height(r2)){
+            }else if(height(r1) < height(r2)){ // t2 heavier
                 //System.out.println("T2 heavier");
                 if(r2.left != null){
                     Node rPrime = AVLTreeMergeWithRoot(r1, r2.left, t);
