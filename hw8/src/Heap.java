@@ -111,7 +111,7 @@ public class Heap {
         while(arr[lchildIndex] != null || arr[rchildIndex] != null){
             // check which child is the more min
             if((arr[lchildIndex] != null && arr[rchildIndex] == null ) || 
-            arr[lchildIndex].compare(arr[rchildIndex])){  // left child is more min
+                arr[lchildIndex].compare(arr[rchildIndex])){  // left child is more min
                             // System.out.println("l min");
                 if(!arr[currIndex].compare(arr[lchildIndex])){ // if curr < child
                     swap(currIndex, lchildIndex);
@@ -144,7 +144,7 @@ public class Heap {
     // This is an optional function, you may use it if you know what it is
     // This function is complete, no need to edit
     public void swap(int index1, int index2){
-                    // System.out.println("swap " + arr[index1].price + " " + arr[index2].price);
+        // System.out.println("swap " + arr[index1].price + " " + arr[index2].price);
         Node temp = arr[index1];
         arr[index1] = arr[index2];
         arr[index2] = temp;

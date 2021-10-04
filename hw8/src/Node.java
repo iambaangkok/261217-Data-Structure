@@ -20,6 +20,10 @@ public class Node {
     // maxHeap: the lower the price, the lower the priority
     // If same price, the smaller the timestamp is, the higher the priority will be
     public boolean compare(Node rightNode){
+
+        //isMinHeap == true
+        // return true if (price < rightNode.price)
+
         if (this.price == rightNode.price) {
             return this.timestamp < rightNode.timestamp;
         }else{
