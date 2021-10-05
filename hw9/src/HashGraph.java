@@ -21,12 +21,11 @@ public class HashGraph extends Graph{
     // If you want to get the ASCII code of char c, use (int)c
     public static int polyHash(String s, int p, int x) {
         int hash = 0;
-        for(int i = 0 ; i < s.length(); ++i){ //Sigma i=0 -> |S|-1 : (S[i]*x^i) mod p   // from slide: Topic7-2, page36-37
+        for(int i = s.length()-1 ; i >= 0; --i){ //Sigma i=|S|-1 -> 0 : (S[i]*x^i) mod p   // from slide: Topic7-2, page36-37
             hash = (hash*x + ((int)s.charAt(i)))%p;
         }
         return hash;
     }
-    
     
     // This function has 2 roles
     // [1] Find an empty space to push the string object
